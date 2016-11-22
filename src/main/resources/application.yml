@@ -3,7 +3,7 @@
 ### Java properties file.
 
 server:
-  port: 9001
+  port: 9017
 
 eureka:
   client:
@@ -25,7 +25,7 @@ security:
 
 #management endpoints on a separate port
 management:
-  port: 9002
+  port: 9018
   security:
     enabled: false # management port is internal only. no need to secure it.
 
