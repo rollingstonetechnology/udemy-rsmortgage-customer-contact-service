@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rollingstone.dao.jpa.RsMortgageCustomerContactRepository;
+import com.rollingstone.domain.Address;
 import com.rollingstone.domain.Contact;
 import com.rollingstone.domain.Customer;
 
@@ -32,20 +33,68 @@ public class RsMortgageCustomerContactService {
 
     @Autowired
     GaugeService gaugeService;
+    
+    @Autowired
+   	private CustomerClient customerClient;
 
     public RsMortgageCustomerContactService() {
     }
 
-    public Contact createContact(Contact contact) {
-        return customerContactRepository.save(contact);
+    public Contact createContact(Contact contact) throws Exception {
+    	Contact createdContact = null;
+    	if (contact != null && contact.getCustomer() != null){
+    		
+    		log.info("In service contact create"+ contact.getCustomer().getId());
+    		if (customerClient == null){
+        		log.info("In customerClient null got customer");
+    		}
+    		else {
+    			log.info("In customerClient not null got customer");
+    		}
+    		
+    		Customer customer = customerClient.getCustomer((new Long(contact.getCustomer().getId())));
+    		
+    		if (customer != null){
+    			createdContact  = customerContactRepository.save(contact);
+    		}else {
+    			log.info("Invalid Customer");
+    			throw new Exception("Invalid Customer");
+    		}
+    	}
+    	else {
+    			throw new Exception("Invalid Customer");
+    	}
+        return createdContact;
     }
 
     public Contact getContact(long id) {
         return customerContactRepository.findOne(id);
     }
 
-    public void updateContact(Contact contact) {
-    	customerContactRepository.save(contact);
+    public void updateContact(Contact contact) throws Exception {
+    	Contact createdContact = null;
+    	if (contact != null && contact.getCustomer() != null){
+    		
+    		log.info("In service contact create"+ contact.getCustomer().getId());
+    		if (customerClient == null){
+        		log.info("In customerClient null got customer");
+    		}
+    		else {
+    			log.info("In customerClient not null got customer");
+    		}
+    		
+    		Customer customer = customerClient.getCustomer((new Long(contact.getCustomer().getId())));
+    		
+    		if (customer != null){
+    			createdContact  = customerContactRepository.save(contact);
+    		}else {
+    			log.info("Invalid Customer");
+    			throw new Exception("Invalid Customer");
+    		}
+    	}
+    	else {
+    			throw new Exception("Invalid Customer");
+    	}
     }
 
     public void deleteContact(Long id) {

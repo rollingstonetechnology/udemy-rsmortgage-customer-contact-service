@@ -38,7 +38,7 @@ public class CustomerContactController extends AbstractRestController {
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.CREATED)
     public void createCustomerContact(@RequestBody Contact contact,
-                                 HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
     	Contact createdContact = this.customerContactService.createContact(contact);
         response.setHeader("Location", request.getRequestURL().append("/").append(createdContact.getId()).toString());
     }
@@ -107,7 +107,7 @@ public class CustomerContactController extends AbstractRestController {
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCustomerContact(@PathVariable("id") Long id, @RequestBody Contact contact,
-                                 HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
         checkResourceFound(this.customerContactService.getContact(id));
         if (id != contact.getId()) throw new HTTP400Exception("ID doesn't match!");
         this.customerContactService.updateContact(contact);
